@@ -12,7 +12,8 @@ body {
 	flex-direction: column;
 	align-items: center;
 	height: 100vh;
-	padding: 0px;
+	padding: 0;
+	overflow-x: hidden; /* Prevents horizontal overflow */
 }
 
 /* Background Image */
@@ -64,7 +65,6 @@ body {
 
 h1 {
 	margin-bottom: -20px;
-	margin-top: -30px;
 	font-family: 'Nexa-Heavy';
 	font-weight: 1500;
 	font-style: italic;
@@ -79,8 +79,8 @@ h1 {
 	font-style: italic;
 	font-size: 20px;
 	margin-top: -65px;
-	user-select: none; /* Prevents text selection */
-	pointer-events: none; /* Prevents any mouse interactions */
+	user-select: none;
+	pointer-events: none;
 }
 
 p {
@@ -88,8 +88,8 @@ p {
 	font-family: Roboto;
 	font-style: italic;
 	font-size: 35px;
-	user-select: none; /* Prevents text selection */
-	pointer-events: none; /* Prevents any mouse interactions */
+	user-select: none;
+	pointer-events: none;
 }
 
 /* Task Input and Buttons */
@@ -118,7 +118,7 @@ button {
 	padding: 7px 15px;
 	background-color: black;
 	color: white;
-	border: 1px solid white;
+	border: 2px solid white;
 	cursor: pointer;
 	border-radius: 5px;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -138,7 +138,7 @@ button:hover {
 /* Task List Section */
 #task-list {
 	list-style: none;
-	margin-top: 20px;
+	margin-top: 0;
 }
 
 #task-list li {
@@ -165,15 +165,47 @@ button:hover {
 	color: black;
 }
 
-/* Columns Section */
+/* Adjust Columns Section */
 .columns-container {
 	display: flex;
 	justify-content: space-between;
 	gap: 20px;
 	width: 100%;
 	max-width: 800px;
+	margin: 20px 0; /* Margin for spacing */
 }
 
+/* Wrapper for layout */
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 100%;
+	height: 100vh; /* Full height of the body */
+	position: relative; /* Context for absolute positioning */
+	z-index: 1; /* Below images */
+}
+
+/* Subwrapper for layout */
+.subwrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	padding: 20px; /* Adjust for spacing */
+	position: static; /* Change to static */
+	z-index: 0; /* Above the wrapper */
+	margin-top: 80px; /* Adjust this value if needed */
+	margin-bottom: 0px;
+	padding-bottom: 200px;
+	position: relative;
+	min-height: calc(
+		100vh - 150px
+	); /* Ensure it takes full height minus runner */
+}
+
+/* Column Styles */
 .column1,
 .column2 {
 	flex: 1;
@@ -184,10 +216,9 @@ button:hover {
 	color: white;
 	border: 2px solid white;
 	border-radius: 8px;
-	position: relative; /* Enables absolute positioning for child elements */
+	position: relative;
 }
 
-/* Task Item in Columns */
 .column1 li,
 .column2 li {
 	padding: 5px;
@@ -211,7 +242,7 @@ button:hover {
 	cursor: pointer;
 	padding: 5px 10px;
 	border-radius: 50%;
-	margin-left: auto; /* Ensures 'X' is aligned to the right */
+	margin-left: auto;
 	font-size: 10px;
 }
 
@@ -244,36 +275,143 @@ button:hover {
 	color: black;
 }
 
+/* Runner Image */
 .runner {
-	position: relative; /* Ensure proper positioning */
+	position: absolute; /* Fixed position at the top */
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
 	width: 100%;
-	height: 300px; /* Ensure this matches your desired height */
-	overflow: hidden; /* Prevent overflow */
+	max-width: 1200px;
+	height: 150px; /* Adjust height as needed */
+	z-index: 2; /* Above the wrapper */
 }
 
+/* Common Image Styles */
 .runner img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	position: absolute; /* Keep this absolute to fill the container */
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	filter: brightness(80%);
+}
+
+/* Gradient Overlay for Runner */
+.runner::before,
+.runner::after {
+	content: '';
+	position: absolute;
 	top: 0;
-	left: 0;
-	filter: brightness(80%);
-	filter: saturate(0%);
+	width: 100px;
+	height: 100%;
+	background: linear-gradient(to right, black, transparent);
+	z-index: 2;
 }
 
-.waterbottle {
-	width: 100%;
-	height: 300px; /* Desired height */
+.runner::after {
+	left: auto;
+	right: 0;
+	background: linear-gradient(to left, black, transparent);
 }
 
-.waterbottle img {
-	width: 100%;
-	height: 300px;
-	object-fit: cover;
-	position: absolute; /* Position relative to the container */
-	bottom: 0; /* Align to the bottom */
-	left: 0;
-	filter: brightness(80%);
-	filter: saturate(0%);
+/* Media Queries for Responsiveness */
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+	/* Add styles for .sub */
+	.sub {
+		/* Your styles here */
+	}
+	/* Add styles for p */
+	p {
+		/* Your styles here */
+	}
+	/* Add styles for .todo-container */
+	.todo-container {
+		/* Your styles here */
+	}
+	/* Add styles for #new-task */
+	#new-task {
+		/* Your styles here */
+	}
+	/* Add styles for button */
+	button {
+		/* Your styles here */
+	}
+	/* Add styles for #task-list */
+	#task-list {
+		/* Your styles here */
+	}
+	/* Add styles for #task-list li */
+	#task-list li {
+		/* Your styles here */
+	}
+	/* Add styles for .columns-container */
+	.columns-container {
+		/* Your styles here */
+	}
+	/* Add styles for .column1 and .column2 */
+	.column1,
+	.column2 {
+		/* Your styles here */
+	}
+	/* Add styles for .remove-button */
+	.remove-button {
+		/* Your styles here */
+	}
+	/* Add styles for #move-all-button */
+	#move-all-button {
+		/* Your styles here */
+	}
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+	/* Add styles for .sub */
+	.sub {
+		/* Your styles here */
+	}
+	/* Add styles for p */
+	p {
+		/* Your styles here */
+	}
+	/* Add styles for .todo-container */
+	.todo-container {
+		/* Your styles here */
+	}
+	/* Add styles for #new-task */
+	#new-task {
+		/* Your styles here */
+	}
+	/* Add styles for button */
+	button {
+		/* Your styles here */
+	}
+	/* Add styles for #task-list */
+	#task-list {
+		/* Your styles here */
+	}
+	/* Add styles for #task-list li */
+	#task-list li {
+		/* Your styles here */
+	}
+	/* Add styles for .columns-container */
+	.columns-container {
+		/* Your styles here */
+	}
+	/* Add styles for .column1 and .column2 */
+	.column1,
+	.column2 {
+		/* Your styles here */
+	}
+	/* Add styles for .remove-button */
+	.remove-button {
+		/* Your styles here */
+	}
+	/* Add styles for #move-all-button */
+	#move-all-button {
+		/* Your styles here */
+	}
 }
